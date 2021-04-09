@@ -39,7 +39,7 @@ export const Devices = React.memo(() => {
       setState((prevState) => ({
         ...prevState,
         isLoading: false,
-        error: 'Something was wrang',
+        error: 'Something was wrong',
       }));
     }
   }, []);
@@ -65,7 +65,7 @@ export const Devices = React.memo(() => {
         setState((prevState) => ({
           ...prevState,
           isItemLoading: false,
-          error: 'Something was wrang',
+          error: 'Something was wrong',
         }));
       }
     },
@@ -110,7 +110,7 @@ export const Devices = React.memo(() => {
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
-        error: 'Something was wrang, can not update device status',
+        error: 'Something was wrong, can not update device status',
       }));
       updateDevice({ id, active });
     }
@@ -143,7 +143,7 @@ export const Devices = React.memo(() => {
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
-        error: 'Something was wrang, can not update device Brightness',
+        error: 'Something was wrong, can not update device Brightness',
       }));
     }
   }, [item]);
@@ -166,7 +166,7 @@ export const Devices = React.memo(() => {
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
-        error: 'Something was wrang, can not update device Name',
+        error: 'Something was wrong, can not update device Name',
       }));
     }
   }, [item]);
