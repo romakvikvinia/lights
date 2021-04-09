@@ -139,7 +139,7 @@ export const Devices = React.memo(() => {
    */
   const handleSaveBrightness = useCallback(async () => {
     try {
-      await await fetchUpdateDevice(item);
+      await fetchUpdateDevice(item);
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
@@ -162,7 +162,8 @@ export const Devices = React.memo(() => {
   const handleSaveName = useCallback(async () => {
     try {
       if (!item.name) return;
-      await await fetchUpdateDevice(item);
+      await fetchUpdateDevice(item);
+      updateDevice(item);
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
