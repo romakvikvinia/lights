@@ -80,21 +80,31 @@ export const Devices = React.memo(() => {
   );
 
   /**
-   * update device
+   * update device and item(current device) if it exists
    */
   const updateDevice = useCallback(({ id, ...props }) => {
-    setState((prevState) => ({
-      ...prevState,
-      items: prevState.items.map((i) => {
-        if (i.id === id) {
-          return {
-            ...i,
-            ...props,
-          };
-        }
-        return i;
-      }),
-    }));
+    setState((prevState) => {
+      let { item } = prevState;
+      if (item && item.id === id) {
+        item = {
+          ...item,
+          ...props,
+        };
+      }
+      return {
+        ...prevState,
+        item,
+        items: prevState.items.map((i) => {
+          if (i.id === id) {
+            return {
+              ...i,
+              ...props,
+            };
+          }
+          return i;
+        }),
+      };
+    });
   }, []);
   /**
    * update device status
