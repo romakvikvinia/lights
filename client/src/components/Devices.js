@@ -131,7 +131,9 @@ export const Devices = React.memo(() => {
       });
     } catch (error) {}
   }, []);
-
+  /**
+   * api update device, save Brightness
+   */
   const handleSaveBrightness = useCallback(async () => {
     try {
       await await fetchUpdateDevice(item);
@@ -139,6 +141,29 @@ export const Devices = React.memo(() => {
       setState((prevState) => ({
         ...prevState,
         error: 'Something was wrang, can not update device Brightness',
+      }));
+    }
+  }, [item]);
+
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      item: {
+        ...prevState.item,
+        [name]: value,
+      },
+    }));
+  }, []);
+
+  const handleSaveName = useCallback(async () => {
+    try {
+      if (!item.name) return;
+      await await fetchUpdateDevice(item);
+    } catch (error) {
+      setState((prevState) => ({
+        ...prevState,
+        error: 'Something was wrang, can not update device Name',
       }));
     }
   }, [item]);
@@ -200,7 +225,13 @@ export const Devices = React.memo(() => {
           ) : item ? (
             <>
               <Box p={2} mt={3}>
-                <Input backgroundColor='white' value={item.name} />
+                <Input
+                  name='name'
+                  backgroundColor='white'
+                  value={item.name}
+                  onChange={handleChange}
+                  onBlur={handleSaveName}
+                />
               </Box>
               <ArcSlider
                 width='450px'
