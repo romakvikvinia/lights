@@ -30,18 +30,11 @@ export const Devices = React.memo(() => {
   const loadDevices = useCallback(async () => {
     try {
       const { data: items } = await fetchDevices();
-      setTimeout(() => {
-        setState((prevState) => ({
-          ...prevState,
-          isLoading: false,
-          items,
-        }));
-      }, 5000);
-      // setState((prevState) => ({
-      //   ...prevState,
-      //   isLoading: false,
-      //   items,
-      // }));
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        items,
+      }));
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
