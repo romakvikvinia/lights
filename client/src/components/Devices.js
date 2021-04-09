@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ArcSlider, Box, Checkbox, Flex, Table, Txt } from 'rendition';
+import { ArcSlider, Box, Checkbox, Flex, Table, Txt, Input } from 'rendition';
 import styled from 'styled-components';
-import { fetchDevice, fetchDevices } from '../api/lights.api';
+import { fetchDevice, fetchDevices, fetchUpdateDevice } from '../api/lights.api';
 
 import { Messages } from './simple/Messages';
 
@@ -99,16 +99,49 @@ export const Devices = React.memo(() => {
   /**
    * update device status
    */
-  const handleChangeStatus = useCallback(
-    async ({ id, active }) => {
-      try {
-        updateDevice({ id, active: !active });
-      } catch (error) {
-        updateDevice({ id, active });
-      }
-    },
-    [updateDevice]
-  );
+  const handleChangeStatus = useCallback(async ({ id, active }) => {
+    try {
+      let payload = { id, active: !active };
+      updateDevice(payload);
+      await fetchUpdateDevice(payload);
+    } catch (error) {
+      setState((prevState) => ({
+        ...prevState,
+        error: 'Something was wrang, can not update device status',
+      }));
+      updateDevice({ id, active });
+    }
+  }, []);
+
+  const handleChangeBrightness = useCallback(async (brightness) => {
+    try {
+      setState((prevState) => {
+        let { item } = prevState;
+        item.brightness = parseInt(brightness * 100);
+        return {
+          ...prevState,
+          item,
+          items: prevState.items.map((i) => {
+            if (i.id === item.id) {
+              return item;
+            }
+            return i;
+          }),
+        };
+      });
+    } catch (error) {}
+  }, []);
+
+  const handleSaveBrightness = useCallback(async () => {
+    try {
+      await await fetchUpdateDevice(item);
+    } catch (error) {
+      setState((prevState) => ({
+        ...prevState,
+        error: 'Something was wrang, can not update device Brightness',
+      }));
+    }
+  }, [item]);
 
   //component did mount
   useEffect(() => {
@@ -165,9 +198,20 @@ export const Devices = React.memo(() => {
           {isItemLoading ? (
             'Loading...'
           ) : item ? (
-            <ArcSlider width='450px' mx='auto'>
-              <Txt color='white'>Brightness</Txt>
-            </ArcSlider>
+            <>
+              <Box p={2} mt={3}>
+                <Input backgroundColor='white' value={item.name} />
+              </Box>
+              <ArcSlider
+                width='450px'
+                mx='auto'
+                onValueChange={handleChangeBrightness}
+                value={item.brightness / 100}
+                onMouseUp={handleSaveBrightness}
+              >
+                <Txt color='white'>Brightness</Txt>
+              </ArcSlider>
+            </>
           ) : null}
         </ControlContainer>
       </Flex>
